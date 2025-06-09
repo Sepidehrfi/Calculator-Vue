@@ -1,9 +1,22 @@
 <template>
   <div class="calculator">
-  <h1>Calculator</h1>  
-    <input type="text" class="display" v-model="expression" disabled @keydown="handleKeydown">
+    <h1>Calculator</h1>
+    <input
+      type="text"
+      class="display"
+      v-model="expression"
+      disabled
+      @keydown="handleKeydown"
+    />
     <div class="buttons">
-      <button v-for="button in buttons" :key="button.label" @click="handleButtonClick(button)">{{ button.label }}</button>
+      <button
+        v-for="button in buttons"
+        :key="button.label"
+        class="animated-button"
+        @click="handleButtonClick(button)"
+      >
+        {{ button.label }}
+      </button>
     </div>
   </div>
 </template>
@@ -12,51 +25,51 @@
 export default {
   data() {
     return {
-      expression: '',
+      expression: "",
       buttons: [
-        { label: '7', value: '7' },
-        { label: '8', value: '8' },
-        { label: '9', value: '9' },
-        { label: '+', value: '+' },
-        { label: '4', value: '4' },
-        { label: '5', value: '5' },
-        { label: '6', value: '6' },
-        { label: '-', value: '-' },
-        { label: '1', value: '1' },
-        { label: '2', value: '2' },
-        { label: '3', value: '3' },
-        { label: '*', value: '*' },
-        { label: '0', value: '0' },
-        { label: '.', value: '.' },
-        { label: '=', value: '=' },
-        { label: '/', value: '/' },
-        { label: 'AC', value: 'AC' }, // AC button
+        { label: "7", value: "7" },
+        { label: "8", value: "8" },
+        { label: "9", value: "9" },
+        { label: "+", value: "+" },
+        { label: "4", value: "4" },
+        { label: "5", value: "5" },
+        { label: "6", value: "6" },
+        { label: "-", value: "-" },
+        { label: "1", value: "1" },
+        { label: "2", value: "2" },
+        { label: "3", value: "3" },
+        { label: "*", value: "*" },
+        { label: "0", value: "0" },
+        { label: ".", value: "." },
+        { label: "=", value: "=" },
+        { label: "/", value: "/" },
+        { label: "AC", value: "AC" }, // AC button
       ],
     };
   },
   methods: {
-handleButtonClick(button) {
-  if (button.value === '=') {
-    this.calculate();
-  } else if (button.value === 'AC') { // Handle AC button
-    this.expression = '';
-  } else {
-    this.expression += button.value;
-  }
-},
-
+    handleButtonClick(button) {
+      if (button.value === "=") {
+        this.calculate();
+      } else if (button.value === "AC") {
+        // Handle AC button
+        this.expression = "";
+      } else {
+        this.expression += button.value;
+      }
+    },
 
     calculate() {
       try {
         this.expression = eval(this.expression);
       } catch (error) {
-        this.expression = 'Error';
+        this.expression = "Error";
       }
     },
     handleKeydown(event) {
       const key = event.key;
       const allowedKeys = /[0-9+\-*/.=]/;
-      if (!allowedKeys.test(key) && key !== 'Backspace') {
+      if (!allowedKeys.test(key) && key !== "Backspace") {
         event.preventDefault();
         return;
       }
@@ -64,11 +77,11 @@ handleButtonClick(button) {
       event.preventDefault();
 
       switch (key) {
-        case '=':
-        case 'Enter':
+        case "=":
+        case "Enter":
           this.calculate();
           break;
-        case 'Backspace':
+        case "Backspace":
           this.expression = this.expression.slice(0, -1);
           break;
         default:
@@ -90,28 +103,29 @@ handleButtonClick(button) {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   padding: 20px;
-  background-color: #f5f5f5;
+  background-color: #e7e3e360;
   max-width: 400px;
   margin: 0 auto;
+  margin-top: 5rem !important;
 }
-h1{
-  color: #34495E;
+h1 {
+  color: #032e5a;
   font-size: 40px;
   margin-top: -50px;
   font-weight: bold;
   text-align: center;
-
 }
 
 .display {
   width: 100%;
   height: 60px;
-  padding: 10px;
+  /* padding: 10px; */
+  width: 85%;
   font-size: 24px;
   text-align: right;
   margin-bottom: 20px;
-  background-color: #fff;
-  border-radius: 5px;
+  color: #ffffff;
+  background-color: #032e5a;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -125,7 +139,7 @@ button {
   width: 80px;
   height: 60px;
   font-size: 24px;
-  background-color: #34495E;
+  background-color: #032e5a;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -135,7 +149,21 @@ button {
 }
 
 button:hover {
-  background-color: #263238;
+  background-color: #032e5ab6;
+}
+.animated-button {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 10px 20px;
+  border: none;
+  background-color: #032e5a;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.animated-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
 
 @media (max-width: 480px) {
