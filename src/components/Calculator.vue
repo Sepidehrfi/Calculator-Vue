@@ -27,6 +27,7 @@ export default {
     return {
       expression: "",
       buttons: [
+        { label: "⌫", value: "Backspace" },
         { label: "7", value: "7" },
         { label: "8", value: "8" },
         { label: "9", value: "9" },
@@ -43,25 +44,52 @@ export default {
         { label: ".", value: "." },
         { label: "=", value: "=" },
         { label: "/", value: "/" },
-        { label: "AC", value: "AC" }, // AC button
+        { label: "AC", value: "AC" },
+        { label: "(", value: "(" },
+        { label: ")", value: ")" },
+        { label: "√", value: "Math.sqrt(" },
+        { label: "π", value: "Math.PI" },
+        { label: "x²", value: "**2" },
+        { label: "x³", value: "**3" },
       ],
     };
   },
   methods: {
     handleButtonClick(button) {
-      if (button.value === "=") {
-        this.calculate();
-      } else if (button.value === "AC") {
-        // Handle AC button
-        this.expression = "";
-      } else {
-        this.expression += button.value;
+      const value = button.value;
+      switch (value) {
+        case "=":
+          this.calculate();
+          break;
+        case "AC":
+          this.expression = "";
+          break;
+        case "Backspace":
+          this.expression = this.expression.slice(0, -1);
+          break;
+        case "Math.sqrt(":
+          this.expression += "Math.sqrt(";
+          break;
+        case "Math.PI":
+          this.expression = this.expression * Math.PI.toString();
+          break;
+        case "**2":
+          this.expression += "**2";
+          break;
+        case "**3":
+          this.expression += "**3";
+          break;
+        default:
+          this.expression += value;
+          break;
       }
     },
 
     calculate() {
       try {
-        this.expression = eval(this.expression);
+        // eslint-disable-next-line no-new-func
+        const result = Function(`return (${this.expression})`)();
+        this.expression = result.toString();
       } catch (error) {
         this.expression = "Error";
       }
@@ -76,8 +104,13 @@ export default {
 
       event.preventDefault();
 
-      switch (key) {
+      switch (value) {
         case "=":
+          this.calculate();
+          break;
+        case "AC":
+          this.expression = "";
+          break;
         case "Enter":
           this.calculate();
           break;
@@ -85,7 +118,7 @@ export default {
           this.expression = this.expression.slice(0, -1);
           break;
         default:
-          this.expression += key;
+          this.expression += value;
           break;
       }
     },
@@ -99,7 +132,7 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 600px;
+  height: 670px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   padding: 20px;
@@ -109,7 +142,7 @@ export default {
   margin-top: 5rem !important;
 }
 h1 {
-  color: #032e5a;
+  color: black;
   font-size: 40px;
   margin-top: -50px;
   font-weight: bold;
@@ -125,7 +158,7 @@ h1 {
   text-align: right;
   margin-bottom: 20px;
   color: #ffffff;
-  background-color: #032e5a;
+  background-color: #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -139,8 +172,6 @@ button {
   width: 80px;
   height: 60px;
   font-size: 24px;
-  background-color: #032e5a;
-  color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -149,14 +180,14 @@ button {
 }
 
 button:hover {
-  background-color: #032e5ab6;
+  background-color: #3f4144b6;
 }
 .animated-button {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   padding: 10px 20px;
   border: none;
-  background-color: #032e5a;
-  color: white;
+  background-color: #fff;
+  color: black;
   border-radius: 8px;
   cursor: pointer;
 }
